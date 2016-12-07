@@ -7,16 +7,6 @@ const app = express()
 
 var FB = require('./connectors/facebook')
 
-const WIT_TOKEN = process.env.WIT_TOKEN
-if (!WIT_TOKEN) {
-  throw new Error('Missing WIT_TOKEN. Go to https://wit.ai/docs/quickstart to get one.')
-}
-
-const FB_PAGE_TOKEN = process.env.FB_PAGE_TOKEN;
-if (!FB_PAGE_TOKEN) {
-	throw new Error('Missing FB_PAGE_TOKEN. Go to https://developers.facebook.com/docs/pages/access-tokens to get one.')
-}
-
 app.set('port', (process.env.PORT || 5000))
 
 // Process application/x-www-form-urlencoded
