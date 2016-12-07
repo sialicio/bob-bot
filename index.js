@@ -6,6 +6,7 @@ const request = require('request')
 const app = express()
 
 var FB = require('./connectors/facebook')
+var Bot = require('./bot')
 
 app.set('port', (process.env.PORT || 5000))
 
@@ -55,13 +56,9 @@ app.post('/webhook/', function (req, res) {
       FB.newMessage(entry.sender.id, "That's interesting!")
     } else {
       // SEND TO BOT FOR PROCESSING
-        let event = req.body.entry[0].messaging[i]
-        let sender = event.sender.id
-        let text = event.message.text
-      FB.newMessage(sender, "Tu disse: " + text.substring(0, 200))
-      /*Bot.read(entry.sender.id, entry.message.text, function (sender, reply) {
+      Bot.read(entry.sender.id, entry.message.text, function (sender, reply) {
         FB.newMessage(sender, reply)
-        })*/
+      })
     }
   }
 
