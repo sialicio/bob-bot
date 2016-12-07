@@ -1,7 +1,7 @@
 'use strict'
 
 var Config = require('./config')
-//var wit = require('./services/wit').getWit()
+var wit = require('./services/wit').getWit()
 
 // LETS SAVE USER SESSIONS
 var sessions = {}
@@ -38,12 +38,12 @@ var read = function (sender, message, reply) {
 		reply(sender, message)
 	} else {
 		// Let's find the user
-		/* var sessionId = findOrCreateSession(sender)*/
-		message = 'Você disse: ' + message
-		reply(sender, message)
+		var sessionId = findOrCreateSession(sender)
+		/*message = 'Você disse: ' + message
+		reply(sender, message)*/
 		// Let's forward the message to the Wit.ai bot engine
 		// This will run all actions until there are no more actions left to do
-        /*
+
 		wit.runActions(
 			sessionId, // the user's current session by id
 			message,  // the user's message
