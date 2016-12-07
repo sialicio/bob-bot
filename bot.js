@@ -39,7 +39,7 @@ var read = function (sender, message, reply) {
 	} else {
 		// Let's find the user
 		/* var sessionId = findOrCreateSession(sender)*/
-		message = 'Oi!'
+		message = 'Hello yourself! I am a chat bot. You can say "show me pics of corgis"'
 		reply(sender, message)
 		// Let's forward the message to the Wit.ai bot engine
 		// This will run all actions until there are no more actions left to do
