@@ -32,14 +32,14 @@ var findOrCreateSession = function (fbid) {
 }
 
 var read = function (sender, message, reply) {
-	if (message === 'hello') {
+	if (message === 'oi' || message === 'ola') {
 		// Let's reply back hello
-		message = 'Hello yourself! I am a chat bot. You can say "show me pics of corgis"'
+		message = 'Oi! Eu sou um chatbot. Você pode perguntar: "Where can I see Zootopia tomorrow at 6pm?"'
 		reply(sender, message)
 	} else {
 		// Let's find the user
 		/* var sessionId = findOrCreateSession(sender)*/
-		message = 'Hello yourself! I am a chat bot. You can say "show me pics of corgis"'
+		message = 'Você disse: ' + message
 		reply(sender, message)
 		// Let's forward the message to the Wit.ai bot engine
 		// This will run all actions until there are no more actions left to do
