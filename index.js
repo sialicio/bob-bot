@@ -5,6 +5,18 @@ const bodyParser = require('body-parser')
 const request = require('request')
 const app = express()
 
+var FB = require('./connectors/facebook')
+
+const WIT_TOKEN = process.env.WIT_TOKEN
+if (!WIT_TOKEN) {
+  throw new Error('Missing WIT_TOKEN. Go to https://wit.ai/docs/quickstart to get one.')
+}
+
+const FB_PAGE_TOKEN = process.env.FB_PAGE_TOKEN;
+if (!FB_PAGE_TOKEN) {
+	throw new Error('Missing FB_PAGE_TOKEN. Go to https://developers.facebook.com/docs/pages/access-tokens to get one.')
+}
+
 app.set('port', (process.env.PORT || 5000))
 
 // Process application/x-www-form-urlencoded
@@ -28,6 +40,7 @@ app.get('/webhook/', function (req, res) {
 })
 */
 
+/*
 app.post('/webhook/', function (req, res) {
     let messaging_events = req.body.entry[0].messaging
     for (let i = 0; i < messaging_events.length; i++) {
@@ -40,8 +53,29 @@ app.post('/webhook/', function (req, res) {
     }
     res.sendStatus(200)
 })
+*/
 
-function sendTextMessage(sender, text) {
+// to send messages to facebook
+app.post('/webhooks', function (req, res) {
+  var entry = FB.getMessageEntry(req.body)
+  // IS THE ENTRY A VALID MESSAGE?
+  if (entry && entry.message) {
+    if (entry.message.attachments) {
+      // NOT SMART ENOUGH FOR ATTACHMENTS YET
+      FB.newMessage(entry.sender.id, "That's interesting!")
+    } else {
+      // SEND TO BOT FOR PROCESSING
+      FB.newMessage(sender, "Tu disse: " + text.substring(0, 200))
+      /*Bot.read(entry.sender.id, entry.message.text, function (sender, reply) {
+        FB.newMessage(sender, reply)
+        })*/
+    }
+  }
+
+  res.sendStatus(200)
+})
+
+/*function sendTextMessage(sender, text) {
     let messageData = { text:text }
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
@@ -58,9 +92,9 @@ function sendTextMessage(sender, text) {
             console.log('Error: ', response.body.error)
         }
     })
-}
+} */
 
-const token = "EAAZAwQbY0G9IBAPGL5zFEqCTjwRKZA0x7msZAsESasZAlzuLYjXrZBmrBzxPY6fvzNy7i1WqOmuhn8fT5Iv7PlDTnXMrew8jVK6daz0ZBVjsRqsc2KHryZBNTPvdqsVprdwXC1wUd2KuCIROPJFsC69EnJwo7gBLq60cbGUDwJQZBEZARUb2cjy5O"
+
 
 // Spin up the server
 app.listen(app.get('port'), function() {
